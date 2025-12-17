@@ -1,0 +1,27 @@
+name: Run unit tests (LW5)
+# когда запускаем workflow
+on:
+  push:
+
+jobs:
+  tests:
+    name: Unit tests on ${{ matrix.os }}
+    strategy:
+      # матрица ОС
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    # берем раннер из матрицы
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # скачиваем код репозитория в рабочий каталог раннера
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      # устанавливаем python нужной версии
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      # запускаем unit-тесты
+      - name: Run unit tests
+        run: python -m unittest rectangle.py
